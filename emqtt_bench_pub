@@ -32,7 +32,9 @@
          {clean, $C, "clean", {boolean, true},
           "clean session"},
          {ifaddr, undefined, "ifaddr", string,
-          "local ipaddress or interface address"}
+          "local ipaddress or interface address"},
+         {num, $n, "num", {integer, 0},
+          "topic num"}
         ]).
 
 main(Argv) ->

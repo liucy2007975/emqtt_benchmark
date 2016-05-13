@@ -117,7 +117,7 @@ connect(Parent, N, PubSub, Opts) ->
     [Topic|_]=topics_opt(AllOpts),
     %% io:format("~w~n",[MqttOpts]),
   Topic_self=lists:concat([c,'/',binary_to_atom(ClientId),'/',status]) ,
-    Will=[{qos, 2}, {retain, false}, {topic, Topic_self}, {payload, stateMessage(offline,binary_to_atom(ClientId))}],
+    Will=[{qos, 2}, {retain, false}, {topic, list_to_binary(Topic_self)}, {payload, stateMessage(offline,binary_to_atom(ClientId))}],
     MqttOpts1=lists:append(MqttOpts,[{will,Will}]),
     %% io:format("~w~n",[MqttOpts1]),
 

@@ -125,13 +125,18 @@ connect(Parent, N, PubSub, Opts) ->
         Parent ! {connected, N, Client},
         case PubSub of
             sub ->
-              emqttc:publish(Client,Topic,stateMessage(online,binary_to_atom(ClientId))),
+              Topic_self=lists:concat([c,'/',Client,'/',info]) ,
+              emqttc:publish(Client,Topic_self,stateMessage(online,binary_to_atom(ClientId))),
                 subscribe(Client, AllOpts);
             pub ->
              %%   TopicContent = string:concat("content---->",binary:bin_to_list(ClientId)),
              %%   io:format("~w~n~w~n",[list_to_atom(TopicContent),list_to_atom(binary:bin_to_list(Topic))]),
              %%   emqttc:publish(Client,Topic,stateMessage(online,binary_to_atom(ClientId))),
-              emqttc:publish(Client,Topic,stateMessage(online,binary_to_atom(ClientId))),
+             %% emqttc:publish(Client,Topic,stateMessage(online,binary_to_atom(ClientId))),
+              Topic_self=lists:concat([c,'/',Client,'/',info]) ,
+              io:format("~w~n",Topic_self),
+              emqttc:publish(Client,Topic_self,stateMessage(online,binary_to_atom(ClientId))),
+
                Interval = proplists:get_value(interval_of_msg, Opts),
                timer:send_interval(Interval, publish)
         end,

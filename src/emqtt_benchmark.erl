@@ -116,7 +116,8 @@ connect(Parent, N, PubSub, Opts) ->
 
     [Topic|_]=topics_opt(AllOpts),
     %% io:format("~w~n",[MqttOpts]),
-    Will=[{qos, 2}, {retain, false}, {topic, Topic}, {payload, stateMessage(offline,binary_to_atom(ClientId))}],
+  Topic_self=lists:concat([c,'/',binary_to_atom(ClientId),'/',status]) ,
+    Will=[{qos, 2}, {retain, false}, {topic, Topic_self}, {payload, stateMessage(offline,binary_to_atom(ClientId))}],
     MqttOpts1=lists:append(MqttOpts,[{will,Will}]),
     %% io:format("~w~n",[MqttOpts1]),
 
@@ -125,7 +126,7 @@ connect(Parent, N, PubSub, Opts) ->
         Parent ! {connected, N, Client},
         case PubSub of
             sub ->
-              Topic_self=lists:concat([c,'/',binary_to_atom(ClientId),'/',info]) ,
+              %%Topic_self=lists:concat([c,'/',binary_to_atom(ClientId),'/',status]) ,
               emqttc:publish(Client,list_to_binary(Topic_self),stateMessage(online,binary_to_atom(ClientId))),
                 subscribe(Client, AllOpts);
             pub ->
@@ -133,7 +134,7 @@ connect(Parent, N, PubSub, Opts) ->
              %%   io:format("~w~n~w~n",[list_to_atom(TopicContent),list_to_atom(binary:bin_to_list(Topic))]),
              %%   emqttc:publish(Client,Topic,stateMessage(online,binary_to_atom(ClientId))),
              %% emqttc:publish(Client,Topic,stateMessage(online,binary_to_atom(ClientId))),
-              Topic_self=lists:concat([c,'/',binary_to_atom(ClientId),'/',info]) ,
+             %% Topic_self=lists:concat([c,'/',binary_to_atom(ClientId),'/',status]) ,
              %% io:format("~w~n",Topic_self),
               emqttc:publish(Client,list_to_binary(Topic_self),stateMessage(online,binary_to_atom(ClientId))),
 
